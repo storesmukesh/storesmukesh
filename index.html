@@ -275,6 +275,31 @@
       <button id="btnResetFilters" type="button" class="hidden text-blue-600 hover:text-blue-800 font-medium underline">Reset all filters</button>
     </div>
 
+
+    <!-- Office Quick Access Modules -->
+    <section id="officeHub" class="space-y-4">
+      <div class="flex flex-wrap items-end justify-between gap-2">
+        <div><p class="text-xs font-bold uppercase tracking-widest text-amber-700">Office Workspace</p>
+          <h2 class="text-xl font-extrabold text-slate-900">Railway Office Desk</h2>
+          <p class="text-sm text-slate-500">Your important books, contacts, correspondence, notes and demand tracking in one place.</p></div>
+        <button id="officeProfileButton" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm hover:border-blue-300">
+          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-800">👤</span><span class="text-left"><span class="block">Staff Profile</span><span id="officeProfileSummary" class="block text-xs font-normal text-slate-500">Storekeeper / In-Charge</span></span>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        <button data-office-module="books" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-2xl">📚</span><span class="block font-bold text-slate-900">Important Books</span><span class="mt-1 block text-xs text-slate-500">Upload and organize reference books</span><span id="count-books" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 files</span></button>
+        <button data-office-module="contacts" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-2xl">☎️</span><span class="block font-bold text-slate-900">Telephone Directory</span><span class="mt-1 block text-xs text-slate-500">Important railway contacts</span><span id="count-contacts" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 contacts</span></button>
+        <button data-office-module="letters" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-2xl">📨</span><span class="block font-bold text-slate-900">Letters</span><span class="mt-1 block text-xs text-slate-500">Draft and save correspondence</span><span id="count-letters" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 letters</span></button>
+        <button data-office-module="notes" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-2xl">📝</span><span class="block font-bold text-slate-900">Office Notes</span><span class="mt-1 block text-xs text-slate-500">Personal notes and reminders</span><span id="count-notes" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 notes</span></button>
+        <button data-office-module="demands" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-2xl">📊</span><span class="block font-bold text-slate-900">Demand Status</span><span class="mt-1 block text-xs text-slate-500">Track demand and supply progress</span><span id="count-demands" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 demands</span></button>
+        <button data-office-module="profile" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">🪪</span><span class="block font-bold text-slate-900">Staff Profile</span><span class="mt-1 block text-xs text-slate-500">Division, depot and designation</span><span class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">My details</span></button>
+      </div>
+      <div id="officeWorkspace" class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-900 px-5 py-4 text-white"><div><p class="text-xs font-semibold uppercase tracking-widest text-amber-300">Office Module</p><h3 id="officeWorkspaceTitle" class="text-lg font-bold">Workspace</h3></div><button id="officeCloseWorkspace" class="rounded-lg border border-slate-600 px-3 py-1.5 text-sm hover:bg-slate-800">Close</button></div>
+        <div id="officeWorkspaceBody" class="p-4 sm:p-6"></div>
+      </div>
+    </section>
+
     <!-- Documents Container (Grid or Register Table) -->
     <div id="documentsContainer"></div>
 
@@ -1828,6 +1853,51 @@
           reader.readAsText(file);
         });
       }
+
+
+      // Railway Office Desk modules (saved in this browser)
+      const OFFICE_KEY = 'secr_railway_office_desk_v1';
+      let officeData = { books: [], contacts: [], letters: [], notes: [], demands: [], profile: {} };
+      try { officeData = { ...officeData, ...JSON.parse(localStorage.getItem(OFFICE_KEY) || '{}') }; } catch (e) {}
+      const officeSave = () => { try { localStorage.setItem(OFFICE_KEY, JSON.stringify(officeData)); } catch(e) { showToast('Storage is full. Consider removing large files or exporting a backup.', 'rose'); } officeCounts(); };
+      const officeEsc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const officeCounts = () => {
+        ['books','contacts','letters','notes','demands'].forEach(k => { const el=document.getElementById('count-'+k); if(el) el.textContent=officeData[k].length+' '+({books:'files',contacts:'contacts',letters:'letters',notes:'notes',demands:'demands'}[k]); });
+        const p=document.getElementById('officeProfileSummary'); if(p) p.textContent=officeData.profile.designation || depotInfo.storekeeperName || 'Storekeeper / In-Charge';
+      };
+      const officeWorkspace=document.getElementById('officeWorkspace'), officeBody=document.getElementById('officeWorkspaceBody');
+      const officeOpen=(module)=> {
+        officeWorkspace.classList.remove('hidden');
+        const titles={books:'Important Books & Reference Files',contacts:'Telephone Directory',letters:'Letters & Correspondence',notes:'Office Notes',demands:'Demand Status Register',profile:'Railway Staff Profile'};
+        document.getElementById('officeWorkspaceTitle').textContent=titles[module]||'Office Workspace';
+        const rows=officeData[module]||[];
+        let form='';
+        if(module==='books') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-3"><input name="title" required placeholder="Book / document title" class="rounded-lg border p-2.5 text-sm"><input name="category" placeholder="Category (Rules, Manuals...)" class="rounded-lg border p-2.5 text-sm"><input name="file" type="file" accept=".pdf,.doc,.docx,.txt,.jpg,.png" class="rounded-lg border p-2 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-3">Save Reference Book</button><p class="text-xs text-slate-500 md:col-span-3">Files are saved in this browser. Very large files may exceed browser storage limits.</p></form>`;
+        if(module==='contacts') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-4"><input name="name" required placeholder="Officer / contact name" class="rounded-lg border p-2.5 text-sm"><input name="designation" placeholder="Designation / office" class="rounded-lg border p-2.5 text-sm"><input name="phone" required placeholder="Telephone / mobile" class="rounded-lg border p-2.5 text-sm"><input name="email" placeholder="Email (optional)" class="rounded-lg border p-2.5 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-4">Add Contact</button></form>`;
+        if(module==='letters') form=`<form id="officeForm" class="mb-5 grid gap-3"><input name="title" required placeholder="Letter subject / file title" class="rounded-lg border p-2.5 text-sm"><div class="grid gap-3 md:grid-cols-2"><input name="to" placeholder="To / recipient" class="rounded-lg border p-2.5 text-sm"><input name="ref" placeholder="Letter number / reference" class="rounded-lg border p-2.5 text-sm"></div><textarea name="body" required rows="5" placeholder="Write your letter here..." class="rounded-lg border p-3 text-sm"></textarea><button class="justify-self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white">Save Letter</button></form>`;
+        if(module==='notes') form=`<form id="officeForm" class="mb-5 grid gap-3"><input name="title" required placeholder="Note title" class="rounded-lg border p-2.5 text-sm"><textarea name="body" required rows="4" placeholder="Write your office note or reminder..." class="rounded-lg border p-3 text-sm"></textarea><button class="justify-self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white">Save Note</button></form>`;
+        if(module==='demands') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-3"><input name="demandNo" required placeholder="Demand / indent number" class="rounded-lg border p-2.5 text-sm"><input name="item" required placeholder="Item / PL number" class="rounded-lg border p-2.5 text-sm"><input name="qty" placeholder="Quantity" class="rounded-lg border p-2.5 text-sm"><select name="status" class="rounded-lg border p-2.5 text-sm"><option>Draft</option><option>Submitted</option><option>Under Process</option><option>PO Placed</option><option>Partially Supplied</option><option>Supplied</option><option>Closed</option></select><input name="date" type="date" class="rounded-lg border p-2.5 text-sm"><input name="remarks" placeholder="Remarks / next action" class="rounded-lg border p-2.5 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-3">Add Demand / Update Register</button></form>`;
+        if(module==='profile') form=`<form id="officeForm" class="grid gap-4 md:grid-cols-2"><label class="text-sm font-semibold">Full Name<input name="name" value="${officeEsc(officeData.profile.name||'')}" placeholder="Staff name" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Designation<input name="designation" value="${officeEsc(officeData.profile.designation||depotInfo.storekeeperName||'')}" placeholder="e.g. Storekeeper / DMS" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Employee Number<input name="employeeNo" value="${officeEsc(officeData.profile.employeeNo||'')}" placeholder="Employee number" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Railway Zone / Division<input name="division" value="${officeEsc(officeData.profile.division||depotInfo.zoneName||'')}" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold md:col-span-2">Depot / Office<input name="depot" value="${officeEsc(officeData.profile.depot||depotInfo.depotName||'')}" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Office Telephone<input name="phone" value="${officeEsc(officeData.profile.phone||'')}" placeholder="Office contact" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Email<input name="email" value="${officeEsc(officeData.profile.email||'')}" placeholder="Official email" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><button class="justify-self-start rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white md:col-span-2">Save Staff Profile</button></form>`;
+        const list=rows.length?`<div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="p-3">Details</th><th class="p-3">Additional Information</th><th class="p-3">Action</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="border-t border-slate-100 align-top"><td class="p-3 font-semibold">${officeEsc(r.title||r.name||r.demandNo||r.item||'Record')}<div class="mt-1 text-xs font-normal text-slate-500">${officeEsc(r.category||r.designation||r.ref||r.date||'')}</div></td><td class="p-3 whitespace-pre-wrap text-slate-600">${officeEsc(r.body||[r.phone,r.email,r.to,r.qty,r.status,r.remarks,r.fileName].filter(Boolean).join(' • '))}${r.fileData?`<div class="mt-2"><a class="text-blue-700 underline" download="${officeEsc(r.fileName||'reference')}" href="${r.fileData}">Open / download file</a></div>`:''}</td><td class="p-3"><button data-office-delete="${i}" class="rounded-lg border border-rose-200 px-2.5 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Delete</button></td></tr>`).join('')}</tbody></table></div>`:`<div class="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">No records yet. Use the form above to add your first entry.</div>`;
+        officeBody.innerHTML=form+list;
+        const f=document.getElementById('officeForm');
+        if(f) f.addEventListener('submit',async e=>{
+          e.preventDefault(); const fd=new FormData(f), obj=Object.fromEntries(fd.entries());
+          if(module==='books' && fd.get('file') && fd.get('file').size){
+            const file=fd.get('file'); obj.fileName=file.name;
+            if(file.size>1800000){showToast('Please choose a file smaller than 1.8 MB for browser storage.','rose');return;}
+            obj.fileData=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(file);});
+          }
+          if(module==='profile'){officeData.profile=obj; depotInfo.storekeeperName=obj.designation||depotInfo.storekeeperName; if(obj.division)depotInfo.zoneName=obj.division; if(obj.depot)depotInfo.depotName=obj.depot; saveDepotInfo(); renderDepotHeader();}
+          else {obj.id=Date.now().toString(); obj.createdAt=new Date().toISOString().slice(0,10); officeData[module].unshift(obj);}
+          officeSave(); officeOpen(module); showToast('Saved successfully','emerald');
+        });
+        officeBody.querySelectorAll('[data-office-delete]').forEach(b=>b.addEventListener('click',()=>{if(confirm('Delete this record?')){officeData[module].splice(Number(b.dataset.officeDelete),1);officeSave();officeOpen(module);}}));
+      };
+      document.querySelectorAll('[data-office-module]').forEach(b=>b.addEventListener('click',()=>officeOpen(b.dataset.officeModule)));
+      document.getElementById('officeProfileButton').addEventListener('click',()=>officeOpen('profile'));
+      document.getElementById('officeCloseWorkspace').addEventListener('click',()=>officeWorkspace.classList.add('hidden'));
+      officeCounts();
 
       // Initialize App
       loadState();
