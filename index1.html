@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SECR Bilaspur Division — Stores Document & PDF Management Portal</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- Top Official Header -->
+  <header class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-md border-b border-blue-800/60 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <!-- Indian Railways Inspired Emblem SVG -->
+        <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-400/40 flex items-center justify-center shrink-0 shadow-inner">
+          <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="15" rx="2" />
+            <path d="M4 11h16" />
+            <path d="M12 3v8" />
+            <circle cx="8.5" cy="14.5" r="1.2" />
+            <circle cx="15.5" cy="14.5" r="1.2" />
+            <path d="M7 18l-2 3" />
+            <path d="M17 18l2 3" />
+            <path d="M5 20h14" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">Indian Railways</span>
+            <span id="headerDepotBadge" class="text-xs text-blue-200 font-medium">General &amp; Engineering Stores Depot, Bilaspur • SECR Bilaspur Division</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-0.5">Stores Document &amp; PDF Vault (e-Store Register)</h1>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-900/50 border border-blue-700/50 text-xs text-blue-100">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="loggedInUserBadge" class="font-medium">ID: bsp_store</span>
+        </div>
+
+        <button id="btnAuthSettings" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+          </svg>
+          <span>ID &amp; Password</span>
+        </button>
+
+        <button id="btnDepotSettings" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span>Depot Info</span>
+        </button>
+
+        <button id="btnExportCsv" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Export CSV</span>
+        </button>
+
+        <button id="btnBackupModal" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+          </svg>
+          <span>Backup / Restore</span>
+        </button>
+
+        <button id="btnOpenUploadModal" type="button" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Upload PDF / Document</span>
+        </button>
+
+        <button id="btnLogout" type="button" title="Logout / Lock Portal" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-rose-600/90 hover:bg-rose-600 text-white shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 space-y-5 no-print">
+
+    <!-- KPI Summary Cards + Quick Dropzone Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- 4 Summary Cards -->
+      <div class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-slate-500">Total Records</span>
+            <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </span>
+          </div>
+          <div class="mt-2">
+            <div id="statTotalDocs" class="text-2xl font-bold text-slate-900">0</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Active store documents</div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-slate-500">PDF Files</span>
+            <span class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </span>
+          </div>
+          <div class="mt-2">
+            <div id="statPdfCount" class="text-2xl font-bold text-slate-900">0</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Uploaded &amp; digital PDFs</div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-slate-500">Pending Check</span>
+            <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+          </div>
+          <div class="mt-2">
+            <div id="statPendingCount" class="text-2xl font-bold text-amber-600">0</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Awaiting verification</div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-slate-500">Starred / Urgent</span>
+            <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+            </span>
+          </div>
+          <div class="mt-2">
+            <div id="statStarredCount" class="text-2xl font-bold text-slate-900">0</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Pinned for quick access</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Drag & Drop Upload Box -->
+      <div id="quickDropZone" class="lg:col-span-4 bg-white rounded-xl p-4 border-2 border-dashed border-blue-300 hover:border-blue-500 transition cursor-pointer flex items-center justify-between gap-3 group">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs sm:text-sm font-semibold text-slate-800 group-hover:text-blue-700 transition">Quick Upload PDF / Scanned Copy</p>
+            <p class="text-[11px] text-slate-500">Drop PDF, Image, Excel, or click to attach to register</p>
+          </div>
+        </div>
+        <span class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shrink-0 group-hover:bg-blue-700 transition">Browse</span>
+        <input id="quickFileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,.xlsx,.xls,.csv,.doc,.docx,.txt" class="hidden" />
+      </div>
+    </div>
+
+    <!-- Filter & Search Control Bar -->
+    <div class="bg-white rounded-xl border border-slate-200/90 shadow-sm p-4 space-y-3.5">
+      <!-- Category Pills -->
+      <div id="categoryTabs" class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Search, Status, Sort, and View Mode Toggle -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pt-1 border-t border-slate-100">
+        <!-- Search Input -->
+        <div class="md:col-span-5 relative">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input id="searchInput" type="text" placeholder="Search by Title, 8-digit PL No., PO/Challan No., Vendor, or Rack..." class="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          <button id="btnClearSearch" type="button" title="Clear search" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="md:col-span-3">
+          <select id="statusFilter" aria-label="Filter by verification status" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="ALL">All Statuses</option>
+            <option value="Verified">Verified (Checked)</option>
+            <option value="Pending Verification">Pending Verification</option>
+            <option value="Archived">Archived / Closed</option>
+          </select>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="md:col-span-2">
+          <select id="sortSelect" aria-label="Sort documents" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="DATE_DESC">Newest First</option>
+            <option value="DATE_ASC">Oldest First</option>
+            <option value="TITLE_ASC">Title (A–Z)</option>
+            <option value="PL_ASC">PL Number</option>
+          </select>
+        </div>
+
+        <!-- View Mode Toggle -->
+        <div class="md:col-span-2 flex items-center justify-end gap-1.5">
+          <span class="text-xs text-slate-500 mr-1 hidden xl:inline">View:</span>
+          <button id="btnViewGrid" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-blue-50 text-blue-700 border-blue-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+            </svg>
+            <span>Cards</span>
+          </button>
+          <button id="btnViewTable" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-white text-slate-600 border-slate-200 hover:bg-slate-50">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <span>Register</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filter Info Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600 px-1">
+      <div id="resultsCountLabel" class="font-medium">Showing 0 documents</div>
+      <button id="btnResetFilters" type="button" class="hidden text-blue-600 hover:text-blue-800 font-medium underline">Reset all filters</button>
+    </div>
+
+
+    <!-- Office Quick Access Modules -->
+    <section id="officeHub" class="space-y-4">
+      <div class="flex flex-wrap items-end justify-between gap-2">
+        <div><p class="text-xs font-bold uppercase tracking-widest text-amber-700">Office Workspace</p>
+          <h2 class="text-xl font-extrabold text-slate-900">Railway Office Desk</h2>
+          <p class="text-sm text-slate-500">Your important books, contacts, correspondence, notes and demand tracking in one place.</p></div>
+        <button id="officeProfileButton" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm hover:border-blue-300">
+          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-800">👤</span><span class="text-left"><span class="block">Staff Profile</span><span id="officeProfileSummary" class="block text-xs font-normal text-slate-500">Storekeeper / In-Charge</span></span>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        <button data-office-module="books" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-2xl">📚</span><span class="block font-bold text-slate-900">Important Books</span><span class="mt-1 block text-xs text-slate-500">Upload and organize reference books</span><span id="count-books" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 files</span></button>
+        <button data-office-module="contacts" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-2xl">☎️</span><span class="block font-bold text-slate-900">Telephone Directory</span><span class="mt-1 block text-xs text-slate-500">Important railway contacts</span><span id="count-contacts" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 contacts</span></button>
+        <button data-office-module="letters" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-2xl">📨</span><span class="block font-bold text-slate-900">Letters</span><span class="mt-1 block text-xs text-slate-500">Draft and save correspondence</span><span id="count-letters" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 letters</span></button>
+        <button data-office-module="notes" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-2xl">📝</span><span class="block font-bold text-slate-900">Office Notes</span><span class="mt-1 block text-xs text-slate-500">Personal notes and reminders</span><span id="count-notes" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 notes</span></button>
+        <button data-office-module="demands" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-2xl">📊</span><span class="block font-bold text-slate-900">Demand Status</span><span class="mt-1 block text-xs text-slate-500">Track demand and supply progress</span><span id="count-demands" class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">0 demands</span></button>
+        <button data-office-module="profile" class="office-module-card rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"><span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">🪪</span><span class="block font-bold text-slate-900">Staff Profile</span><span class="mt-1 block text-xs text-slate-500">Division, depot and designation</span><span class="mt-3 inline-block rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">My details</span></button>
+      </div>
+      <div id="officeWorkspace" class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-900 px-5 py-4 text-white"><div><p class="text-xs font-semibold uppercase tracking-widest text-amber-300">Office Module</p><h3 id="officeWorkspaceTitle" class="text-lg font-bold">Workspace</h3></div><button id="officeCloseWorkspace" class="rounded-lg border border-slate-600 px-3 py-1.5 text-sm hover:bg-slate-800">Close</button></div>
+        <div id="officeWorkspaceBody" class="p-4 sm:p-6"></div>
+      </div>
+    </section>
+
+    <!-- Documents Container (Grid or Register Table) -->
+    <div id="documentsContainer"></div>
+
+  </main>
+
+  <!-- Upload / Edit Document Modal -->
+  <div id="docModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto no-print">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <h2 id="docModalTitle" class="text-base sm:text-lg font-bold">Add Store Document / PDF</h2>
+          <p class="text-xs text-slate-300">Attach a PDF or file and record Indian Railways Stores metadata</p>
+        </div>
+        <button id="btnCloseDocModal" type="button" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="docForm" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+        <input type="hidden" id="formDocId" value="" />
+
+        <!-- File Attachment Box -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Attach File (PDF, Scanned Image, Excel, Word)</label>
+          <div id="modalDropArea" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50/70">
+            <input id="modalFileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,.xlsx,.xls,.csv,.doc,.docx,.txt" class="hidden" />
+            <div id="fileAttachmentPlaceholder" class="space-y-1">
+              <svg class="w-8 h-8 text-blue-600 mx-auto" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p class="text-xs sm:text-sm font-medium text-slate-700">Click to select a PDF or document file, or drag &amp; drop here</p>
+              <p class="text-[11px] text-slate-500">Supports PDF, JPG/PNG scans, Excel/CSV sheets (stored locally in your browser)</p>
+            </div>
+            <div id="fileAttachmentPreview" class="hidden flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-left">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="px-2 py-1 rounded text-[11px] font-bold bg-blue-600 text-white uppercase shrink-0" id="attachedFileBadge">PDF</span>
+                <div class="truncate">
+                  <p id="attachedFileName" class="text-xs font-semibold text-slate-800 truncate">document.pdf</p>
+                  <p id="attachedFileSize" class="text-[11px] text-slate-500">120 KB</p>
+                </div>
+              </div>
+              <button id="btnRemoveAttachedFile" type="button" class="text-xs text-rose-600 hover:text-rose-800 font-semibold shrink-0 ml-2">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Title & Category -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+          <div class="sm:col-span-7">
+            <label for="formTitle" class="block text-xs font-semibold text-slate-700 mb-1">Document Title / Material Description *</label>
+            <input id="formTitle" type="text" required placeholder="e.g., Traction Motor Armature Bearing R-Note" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="sm:col-span-5">
+            <label for="formCategory" class="block text-xs font-semibold text-slate-700 mb-1">Document Category *</label>
+            <select id="formCategory" required class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="R-Note / Receipt">R-Note / Receipt Note</option>
+              <option value="Purchase Order (PO)">Purchase Order (PO / IREPS)</option>
+              <option value="DMTR / Ledger">DMTR / Ledger Folio</option>
+              <option value="Gate Pass / Challan">Gate Pass / Challan</option>
+              <option value="Inspection (RITES/RDSO)">Inspection Certificate (RITES/RDSO)</option>
+              <option value="Issue Note (S-1313)">Issue Note / Requisition (S-1313)</option>
+              <option value="Circular / Tender">Railway Board / UDM Circular</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PL Number, PO/Ref Number, Date -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="formPlNo" class="block text-xs font-semibold text-slate-700 mb-1">PL Number (8-Digit / Code)</label>
+            <input id="formPlNo" type="text" placeholder="e.g., 29140082" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label for="formRefNo" class="block text-xs font-semibold text-slate-700 mb-1">PO / R-Note / Challan No. *</label>
+            <input id="formRefNo" type="text" required placeholder="e.g., RN-SECR-2026-419" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label for="formDate" class="block text-xs font-semibold text-slate-700 mb-1">Document Date *</label>
+            <input id="formDate" type="date" required class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+
+        <!-- Vendor/Firm, Ward/Rack/Bin, Verification Status -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="formVendor" class="block text-xs font-semibold text-slate-700 mb-1">Firm / Supplier / Consignee</label>
+            <input id="formVendor" type="text" placeholder="e.g., Bharat Heavy Electricals / SSE Loco" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label for="formLocation" class="block text-xs font-semibold text-slate-700 mb-1">Ward / Rack / Bin Location</label>
+            <input id="formLocation" type="text" placeholder="e.g., Ward-03 / Rack-A4 / Bin-12" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label for="formStatus" class="block text-xs font-semibold text-slate-700 mb-1">Verification Status</label>
+            <select id="formStatus" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="Verified">Verified (Checked)</option>
+              <option value="Pending Verification">Pending Verification</option>
+              <option value="Archived">Archived / Closed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quantity & Remarks -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+          <div class="sm:col-span-4">
+            <label for="formQty" class="block text-xs font-semibold text-slate-700 mb-1">Quantity &amp; Unit</label>
+            <input id="formQty" type="text" placeholder="e.g., 24 Nos. / 150 Mtrs" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="sm:col-span-8">
+            <label for="formNotes" class="block text-xs font-semibold text-slate-700 mb-1">Storekeeper Remarks / Ledger Folio Note</label>
+            <input id="formNotes" type="text" placeholder="e.g., RITES IC verified, entered in DMTR page 42, UDM voucher generated" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
+          <button id="btnCancelDocModal" type="button" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-100 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">Save to Store Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Document & PDF Preview Modal -->
+  <div id="previewModal" class="fixed inset-0 z-50 hidden bg-slate-900/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+      <!-- Modal Top Bar -->
+      <div class="px-5 py-3.5 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-2 no-print">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span id="previewBadge" class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500 text-slate-950 uppercase shrink-0">PDF</span>
+          <h3 id="previewTitle" class="text-sm sm:text-base font-bold truncate">Document Preview</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnPrintPreview" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            <span>Print Voucher</span>
+          </button>
+          <button id="btnDownloadFromPreview" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Download File</span>
+          </button>
+          <button id="btnClosePreviewModal" type="button" class="text-slate-400 hover:text-white p-1 rounded-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div id="previewBody" class="p-5 overflow-y-auto custom-scrollbar flex-1 bg-slate-100 space-y-4">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Depot Settings Modal -->
+  <div id="depotModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <h3 class="text-base font-bold">Railway Zone &amp; Store Depot Settings</h3>
+        <button id="btnCloseDepotModal" type="button" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="depotForm" class="p-6 space-y-4">
+        <div>
+          <label for="inputZoneName" class="block text-xs font-semibold text-slate-700 mb-1">Railway Zone / Division</label>
+          <input id="inputZoneName" type="text" required placeholder="e.g., South East Central Railway (SECR) - Raipur Division" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" />
+        </div>
+        <div>
+          <label for="inputDepotName" class="block text-xs font-semibold text-slate-700 mb-1">Depot / Ward Name</label>
+          <input id="inputDepotName" type="text" required placeholder="e.g., General & Engineering Stores Depot, Raipur" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" />
+        </div>
+        <div>
+          <label for="inputStorekeeperName" class="block text-xs font-semibold text-slate-700 mb-1">Storekeeper / In-Charge Name &amp; Designation</label>
+          <input id="inputStorekeeperName" type="text" required placeholder="e.g., DMS / Storekeeper (Ward-03)" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="btnCancelDepotModal" type="button" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white">Save Details</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Backup / Restore Modal -->
+  <div id="backupModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <h3 class="text-base font-bold">Backup &amp; Restore Register Data</h3>
+        <button id="btnCloseBackupModal" type="button" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-slate-700 space-y-2">
+          <p class="font-semibold text-blue-900">Export Full JSON Backup</p>
+          <p>Download all your document records and attached files into a single backup file to keep safe on a pen drive or office PC.</p>
+          <button id="btnDownloadJsonBackup" type="button" class="mt-1 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white">
+            Download Backup (.json)
+          </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-2">
+          <p class="font-semibold text-slate-900">Restore from Backup File</p>
+          <p>Select a previously exported <code>.json</code> backup file to restore your records.</p>
+          <input id="inputRestoreJson" type="file" accept=".json" class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-white hover:file:bg-slate-700" />
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btnDoneBackupModal" type="button" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">Delete Store Record?</h3>
+          <p id="deleteModalDocName" class="text-xs text-slate-500 mt-0.5">This will remove the document from the register.</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="btnCancelDelete" type="button" class="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button id="btnConfirmDelete" type="button" class="px-4 py-2 rounded-lg text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white">Delete Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-Screen Login Gate Overlay (Bilaspur Division) -->
+  <div id="loginOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex items-center justify-center p-4 overflow-y-auto no-print">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-6">
+      <!-- Top Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 px-6 py-6 text-center text-white border-b border-blue-800">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center mx-auto mb-3 shadow-inner">
+          <svg class="w-8 h-8 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="15" rx="2" />
+            <path d="M4 11h16" />
+            <path d="M12 3v8" />
+            <circle cx="8.5" cy="14.5" r="1.2" />
+            <circle cx="15.5" cy="14.5" r="1.2" />
+            <path d="M7 18l-2 3" />
+            <path d="M17 18l2 3" />
+            <path d="M5 20h14" />
+          </svg>
+        </div>
+        <span class="inline-block text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+          South East Central Railway (SECR)
+        </span>
+        <h2 class="text-lg sm:text-xl font-extrabold tracking-tight mt-2">Bilaspur Division — Stores Portal</h2>
+        <p class="text-xs text-blue-200 mt-0.5">Authorized Storekeeper &amp; Staff Login</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="p-6 space-y-4">
+        <div id="loginErrorBox" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700 flex items-center gap-2">
+          <svg class="w-4 h-4 shrink-0 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span id="loginErrorText">Invalid User ID or Password. Please try again.</span>
+        </div>
+
+        <div>
+          <label for="loginUserId" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Storekeeper User ID *</label>
+          <div class="relative">
+            <input id="loginUserId" type="text" required autocomplete="username" placeholder="Enter User ID (e.g., bsp_store)" class="w-full pl-3.5 pr-3 py-2.5 rounded-xl border border-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600" />
+          </div>
+        </div>
+
+        <div>
+          <label for="loginPassword" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Password *</label>
+          <div class="relative">
+            <input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter Password" class="w-full pl-3.5 pr-16 py-2.5 rounded-xl border border-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600" />
+            <button id="btnToggleLoginPwd" type="button" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 text-xs font-semibold text-blue-600 hover:text-blue-800">
+              Show
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+          </svg>
+          <span>Login to Bilaspur Stores Portal</span>
+        </button>
+
+        <!-- Default Credentials Helper Card -->
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-800">Default Bilaspur Division Credentials:</span>
+            <button id="btnQuickFillLogin" type="button" class="text-xs font-semibold text-blue-600 hover:text-blue-800 underline">
+              Auto-Fill Login
+            </button>
+          </div>
+          <div class="grid grid-cols-2 gap-2 font-mono text-[11px] bg-white p-2 rounded-lg border border-slate-200">
+            <div>
+              <span class="text-slate-400 block">USER ID:</span>
+              <strong id="hintDefaultId" class="text-slate-900">bsp_store</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block">PASSWORD:</span>
+              <strong id="hintDefaultPwd" class="text-slate-900">bsp@1234</strong>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-500">You can change your User ID &amp; Password anytime after logging in using the <strong>ID &amp; Password</strong> button in the top bar.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Manage ID & Password Modal -->
+  <div id="authModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold">Manage Login ID &amp; Password</h3>
+          <p class="text-xs text-slate-300">Bilaspur Division Storekeeper Credentials</p>
+        </div>
+        <button id="btnCloseAuthModal" type="button" class="text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="authForm" class="p-6 space-y-4">
+        <div>
+          <label for="inputNewUserId" class="block text-xs font-semibold text-slate-700 mb-1">Storekeeper User ID *</label>
+          <input id="inputNewUserId" type="text" required placeholder="e.g., bsp_store" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-mono" />
+        </div>
+        <div>
+          <label for="inputNewPassword" class="block text-xs font-semibold text-slate-700 mb-1">New Password *</label>
+          <input id="inputNewPassword" type="text" required placeholder="Enter new password" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-mono" />
+        </div>
+        <div>
+          <label for="inputStaffRole" class="block text-xs font-semibold text-slate-700 mb-1">Display Name / Designation</label>
+          <input id="inputStaffRole" type="text" required placeholder="e.g., Storekeeper / DMS (Bilaspur Division)" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm" />
+        </div>
+        <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
+          Your updated User ID and Password will be required the next time you click <strong>Logout</strong> or open this page.
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="btnCancelAuthModal" type="button" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white">Update ID &amp; Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none no-print"></div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'ir_stores_dms_docs_v1';
+      const DEPOT_KEY = 'ir_stores_depot_info_v1';
+
+      const CATEGORIES = [
+        { id: 'ALL', label: 'All Documents' },
+        { id: 'STARRED', label: 'Starred / Urgent' },
+        { id: 'R-Note / Receipt', label: 'R-Notes' },
+        { id: 'Purchase Order (PO)', label: 'Purchase Orders (PO)' },
+        { id: 'DMTR / Ledger', label: 'DMTR & Ledger' },
+        { id: 'Gate Pass / Challan', label: 'Gate Pass / Challan' },
+        { id: 'Inspection (RITES/RDSO)', label: 'Inspection (RITES/RDSO)' },
+        { id: 'Issue Note (S-1313)', label: 'Issue Notes (S-1313)' },
+        { id: 'Circular / Tender', label: 'Circulars' }
+      ];
+
+      const AUTH_KEY = 'ir_stores_bsp_auth_v1';
+      const SESSION_KEY = 'ir_stores_bsp_session_v1';
+
+      const INITIAL_AUTH = {
+        userId: 'bsp_store',
+        password: 'bsp@1234',
+        roleName: 'Storekeeper / DMS (Bilaspur Division)'
+      };
+
+      const INITIAL_DEPOT = {
+        zoneName: 'South East Central Railway (SECR) — Bilaspur Division',
+        depotName: 'General & Engineering Stores Depot, Bilaspur (BSP)',
+        storekeeperName: 'Storekeeper / DMS — Bilaspur Division'
+      };
+
+      const INITIAL_DOCUMENTS = [
+        {
+          id: 'doc-101',
+          title: 'Traction Motor Armature Roller Bearing Receipt Note',
+          category: 'R-Note / Receipt',
+          plNo: '29140082',
+          refNo: 'RN-SECR-BSP-2026-0419',
+          date: '2026-10-14',
+          vendor: 'SKF India Ltd. (via IREPS)',
+          location: 'Ward-03 / Rack-A4 / Bin-12',
+          status: 'Verified',
+          qty: '24 Nos.',
+          notes: 'RITES Inspection Certificate attached. Entered in UDM & DMTR Folio 84.',
+          starred: true,
+          fileName: 'RN_29140082_Traction_Bearing.pdf',
+          fileType: 'PDF',
+          fileSize: '248 KB',
+          fileDataUrl: ''
+        },
+        {
+          id: 'doc-102',
+          title: 'IREPS Purchase Order — Air Brake Hose Coupling Assembly',
+          category: 'Purchase Order (PO)',
+          plNo: '38120490',
+          refNo: 'PO-2026-SECR-88210',
+          date: '2026-10-10',
+          vendor: 'Escorts Kubota Railway Products',
+          location: 'Ward-02 / Rack-C1 / Bin-05',
+          status: 'Verified',
+          qty: '150 Nos.',
+          notes: 'Delivery period up to 30-11-2026. Consignee: SMM/D/Bilaspur (BSP).',
+          starred: false,
+          fileName: 'PO_38120490_Brake_Hose_IREPS.pdf',
+          fileType: 'PDF',
+          fileSize: '312 KB',
+          fileDataUrl: ''
+        },
+        {
+          id: 'doc-103',
+          title: 'RDSO / RITES Inspection Certificate — 60kg UIC Rail Fastenings',
+          category: 'Inspection (RITES/RDSO)',
+          plNo: '60110024',
+          refNo: 'IC-RITES-WR-2026-9104',
+          date: '2026-10-12',
+          vendor: 'Rahee Track Technologies',
+          location: 'Ward-05 / Yard-B2',
+          status: 'Pending Verification',
+          qty: '2,000 Sets',
+          notes: 'Physical count in progress at Store Yard-B2 before R-Note generation.',
+          starred: true,
+          fileName: 'RITES_IC_60110024_Fastenings.pdf',
+          fileType: 'PDF',
+          fileSize: '410 KB',
+          fileDataUrl: ''
+        },
+        {
+          id: 'doc-104',
+          title: 'Daily Material Transaction Register (DMTR) — October Week 2',
+          category: 'DMTR / Ledger',
+          plNo: 'MULTI-PL',
+          refNo: 'DMTR-W03-2026-10-W2',
+          date: '2026-10-15',
+          vendor: 'Internal Depot Register',
+          location: 'Ward-03 Office Record',
+          status: 'Verified',
+          qty: '38 Entries',
+          notes: 'Reconciled with UDM closing balance signed by DMS & SMM.',
+          starred: false,
+          fileName: 'DMTR_Oct_Week2_Summary.pdf',
+          fileType: 'PDF',
+          fileSize: '185 KB',
+          fileDataUrl: ''
+        },
+        {
+          id: 'doc-105',
+          title: 'Material Gate Pass & Delivery Challan — LHB Coach LED Luminaires',
+          category: 'Gate Pass / Challan',
+          plNo: '42150811',
+          refNo: 'GP-2026-1098 / CH-774',
+          date: '2026-10-16',
+          vendor: 'Crompton Greaves Consumer Electricals',
+          location: 'Ward-01 / Rack-D3 / Bin-09',
+          status: 'Pending Verification',
+          qty: '80 Nos.',
+          notes: 'Received at Main Gate at 11:20 hrs. RPF endorsement completed.',
+          starred: false,
+          fileName: 'Challan_42150811_LHB_LED.pdf',
+          fileType: 'PDF',
+          fileSize: '195 KB',
+          fileDataUrl: ''
+        },
+        {
+          id: 'doc-106',
+          title: 'Combined Requisition & Issue Note (Form S-1313) — Coaching Depot',
+          category: 'Issue Note (S-1313)',
+          plNo: '33091145',
+          refNo: 'ISS-S1313-2026-552',
+          date: '2026-10-08',
+          vendor: 'Issued to: SSE / C&W / Coaching Depot',
+          location: 'Ward-02 / Rack-B1',
+          status: 'Archived',
+          qty: '12 Sets',
+          notes: 'Issued via UDM digital signature to SSE/C&W for Pit Line maintenance.',
+          starred: false,
+          fileName: 'Issue_Note_S1313_33091145.pdf',
+          fileType: 'PDF',
+          fileSize: '142 KB',
+          fileDataUrl: ''
+        }
+      ];
+
+      let documents = [];
+      let depotInfo = { ...INITIAL_DEPOT };
+      let authConfig = { ...INITIAL_AUTH };
+      let isAuthenticated = false;
+      let activeCategory = 'ALL';
+      let activeStatus = 'ALL';
+      let activeSort = 'DATE_DESC';
+      let searchQuery = '';
+      let viewMode = 'GRID';
+      let pendingAttachment = null;
+      let deleteTargetId = null;
+      let previewDocId = null;
+
+      function loadState() {
+        try {
+          const rawDocs = localStorage.getItem(STORAGE_KEY);
+          if (rawDocs) {
+            const parsed = JSON.parse(rawDocs);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              documents = parsed;
+            } else {
+              documents = [...INITIAL_DOCUMENTS];
+            }
+          } else {
+            documents = [...INITIAL_DOCUMENTS];
+          }
+        } catch (err) {
+          documents = [...INITIAL_DOCUMENTS];
+        }
+
+        try {
+          const rawDepot = localStorage.getItem(DEPOT_KEY);
+          if (rawDepot) {
+            const parsedDepot = JSON.parse(rawDepot);
+            if (parsedDepot && parsedDepot.depotName) {
+              // Migrate previous default Raipur division to Bilaspur division automatically
+              if (parsedDepot.zoneName && parsedDepot.zoneName.includes('Raipur Division')) {
+                depotInfo = { ...INITIAL_DEPOT };
+                localStorage.setItem(DEPOT_KEY, JSON.stringify(depotInfo));
+              } else {
+                depotInfo = parsedDepot;
+              }
+            }
+          }
+        } catch (err) {
+          depotInfo = { ...INITIAL_DEPOT };
+        }
+
+        try {
+          const rawAuth = localStorage.getItem(AUTH_KEY);
+          if (rawAuth) {
+            const parsedAuth = JSON.parse(rawAuth);
+            if (parsedAuth && parsedAuth.userId && parsedAuth.password) {
+              authConfig = parsedAuth;
+            }
+          }
+        } catch (err) {
+          authConfig = { ...INITIAL_AUTH };
+        }
+
+        try {
+          isAuthenticated = sessionStorage.getItem(SESSION_KEY) === 'true';
+        } catch (err) {
+          isAuthenticated = false;
+        }
+      }
+
+      function saveDocuments() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(documents));
+        } catch (err) {
+          showToast('Note: File kept in active session memory (browser storage limit reached).', 'amber');
+        }
+      }
+
+      function saveDepotInfo() {
+        try {
+          localStorage.setItem(DEPOT_KEY, JSON.stringify(depotInfo));
+        } catch (err) {
+          // ignore storage error in restricted iframe
+        }
+      }
+
+      function showToast(message, color = 'blue') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const bgClass = color === 'emerald'
+          ? 'bg-emerald-700 border-emerald-500'
+          : color === 'rose'
+          ? 'bg-rose-700 border-rose-500'
+          : color === 'amber'
+          ? 'bg-amber-700 border-amber-500'
+          : 'bg-slate-900 border-blue-500';
+        toast.className = `${bgClass} text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border-l-4 pointer-events-auto transition-all duration-200`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 220);
+        }, 3000);
+      }
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes || isNaN(bytes)) return '0 KB';
+        if (bytes < 1024) return bytes + ' B';
+        const kb = bytes / 1024;
+        if (kb < 1024) return kb.toFixed(1) + ' KB';
+        return (kb / 1024).toFixed(2) + ' MB';
+      }
+
+      function detectFileTypeBadge(fileName) {
+        const ext = (fileName || '').split('.').pop().toLowerCase();
+        if (ext === 'pdf') return 'PDF';
+        if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) return 'IMAGE';
+        if (['xlsx', 'xls', 'csv'].includes(ext)) return 'EXCEL';
+        if (['doc', 'docx'].includes(ext)) return 'WORD';
+        return 'DOC';
+      }
+
+      function getFilteredDocuments() {
+        return documents
+          .filter(doc => {
+            if (activeCategory === 'STARRED' && !doc.starred) return false;
+            if (activeCategory !== 'ALL' && activeCategory !== 'STARRED' && doc.category !== activeCategory) return false;
+            if (activeStatus !== 'ALL' && doc.status !== activeStatus) return false;
+            if (searchQuery.trim() !== '') {
+              const q = searchQuery.toLowerCase().trim();
+              const hay = [
+                doc.title,
+                doc.plNo,
+                doc.refNo,
+                doc.vendor,
+                doc.location,
+                doc.category,
+                doc.notes,
+                doc.fileName
+              ].join(' ').toLowerCase();
+              if (!hay.includes(q)) return false;
+            }
+            return true;
+          })
+          .sort((a, b) => {
+            if (activeSort === 'DATE_DESC') return (b.date || '').localeCompare(a.date || '');
+            if (activeSort === 'DATE_ASC') return (a.date || '').localeCompare(b.date || '');
+            if (activeSort === 'TITLE_ASC') return (a.title || '').localeCompare(b.title || '');
+            if (activeSort === 'PL_ASC') return (a.plNo || '').localeCompare(b.plNo || '');
+            return 0;
+          });
+      }
+
+      function saveAuthConfig() {
+        try {
+          localStorage.setItem(AUTH_KEY, JSON.stringify(authConfig));
+        } catch (err) {
+          // ignore storage error
+        }
+      }
+
+      function renderAuthUI() {
+        const overlay = document.getElementById('loginOverlay');
+        if (isAuthenticated) {
+          overlay.classList.add('hidden');
+        } else {
+          overlay.classList.remove('hidden');
+        }
+        document.getElementById('loggedInUserBadge').textContent = `ID: ${authConfig.userId}`;
+        document.getElementById('hintDefaultId').textContent = authConfig.userId;
+        document.getElementById('hintDefaultPwd').textContent = authConfig.password;
+      }
+
+      function renderDepotHeader() {
+        document.getElementById('headerDepotBadge').textContent = `${depotInfo.depotName} • ${depotInfo.zoneName}`;
+        renderAuthUI();
+      }
+
+      function renderStats() {
+        document.getElementById('statTotalDocs').textContent = documents.length;
+        document.getElementById('statPdfCount').textContent = documents.filter(d => (d.fileType || 'PDF') === 'PDF').length;
+        document.getElementById('statPendingCount').textContent = documents.filter(d => d.status === 'Pending Verification').length;
+        document.getElementById('statStarredCount').textContent = documents.filter(d => d.starred).length;
+      }
+
+      function renderCategoryTabs() {
+        const container = document.getElementById('categoryTabs');
+        container.innerHTML = CATEGORIES.map(cat => {
+          const count = cat.id === 'ALL'
+            ? documents.length
+            : cat.id === 'STARRED'
+            ? documents.filter(d => d.starred).length
+            : documents.filter(d => d.category === cat.id).length;
+
+          const active = activeCategory === cat.id;
+          const classes = active
+            ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100';
+
+          return `
+            <button type="button" data-cat-id="${escapeHtml(cat.id)}" class="px-3 py-1.5 rounded-lg text-xs font-medium border whitespace-nowrap flex items-center gap-1.5 transition ${classes}">
+              <span>${escapeHtml(cat.label)}</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] ${active ? 'bg-blue-800 text-blue-100' : 'bg-slate-200 text-slate-700'}">${count}</span>
+            </button>
+          `;
+        }).join('');
+
+        container.querySelectorAll('button[data-cat-id]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            activeCategory = btn.getAttribute('data-cat-id');
+            renderAll();
+          });
+        });
+      }
+
+      function getStatusBadgeHtml(status) {
+        if (status === 'Verified') {
+          return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Verified</span>';
+        }
+        if (status === 'Pending Verification') {
+          return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Pending Check</span>';
+        }
+        return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Archived</span>';
+      }
+
+      function getFileTypeBadgeHtml(fileType) {
+        const t = (fileType || 'PDF').toUpperCase();
+        if (t === 'PDF') {
+          return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200">PDF</span>';
+        }
+        if (t === 'IMAGE') {
+          return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-700 border border-purple-200">SCAN/IMG</span>';
+        }
+        if (t === 'EXCEL') {
+          return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">EXCEL/CSV</span>';
+        }
+        return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">${escapeHtml(t)}</span>`;
+      }
+
+      function renderDocuments() {
+        const filtered = getFilteredDocuments();
+        const container = document.getElementById('documentsContainer');
+        const countLabel = document.getElementById('resultsCountLabel');
+        const resetBtn = document.getElementById('btnResetFilters');
+
+        countLabel.textContent = `Showing ${filtered.length} of ${documents.length} store records`;
+        const hasFilters = activeCategory !== 'ALL' || activeStatus !== 'ALL' || searchQuery.trim() !== '';
+        resetBtn.classList.toggle('hidden', !hasFilters);
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 class="text-sm font-bold text-slate-800">No matching store documents found</h3>
+              <p class="text-xs text-slate-500 max-w-md mx-auto">Try clearing your search filter or click "Upload PDF / Document" above to add a new R-Note, Purchase Order, Challan, or PDF file.</p>
+            </div>
+          `;
+          return;
+        }
+
+        if (viewMode === 'GRID') {
+          container.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${filtered.map(doc => `
+                <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs hover:shadow-md transition flex flex-col justify-between overflow-hidden">
+                  <div class="p-4 space-y-3">
+                    <!-- Top row: Category, File Type, Star -->
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        ${getFileTypeBadgeHtml(doc.fileType)}
+                        <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">${escapeHtml(doc.category)}</span>
+                      </div>
+                      <button type="button" data-action="star" data-id="${escapeHtml(doc.id)}" title="Star / Bookmark Document" class="p-1 rounded-lg hover:bg-slate-100 transition ${doc.starred ? 'text-amber-500' : 'text-slate-300 hover:text-slate-500'}">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <!-- Title -->
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-900 leading-snug line-clamp-2">${escapeHtml(doc.title)}</h3>
+                      <p class="text-[11px] text-slate-500 mt-1 truncate">${escapeHtml(doc.fileName || 'Digital Voucher Record')} (${escapeHtml(doc.fileSize || '120 KB')})</p>
+                    </div>
+
+                    <!-- Key Railway Metadata Box -->
+                    <div class="grid grid-cols-2 gap-2 p-2.5 rounded-lg bg-slate-50 border border-slate-200/70 text-xs">
+                      <div>
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">PL Number</span>
+                        <span class="font-mono font-bold text-slate-800">${escapeHtml(doc.plNo || 'N/A')}</span>
+                      </div>
+                      <div>
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Ref / PO / R-Note</span>
+                        <span class="font-mono font-semibold text-slate-800 truncate block" title="${escapeHtml(doc.refNo)}">${escapeHtml(doc.refNo)}</span>
+                      </div>
+                      <div>
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Ward / Rack / Bin</span>
+                        <span class="text-slate-700 font-medium truncate block">${escapeHtml(doc.location || 'General Ward')}</span>
+                      </div>
+                      <div>
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Qty &amp; Date</span>
+                        <span class="text-slate-700 font-medium truncate block">${escapeHtml(doc.qty || '-')} • ${escapeHtml(doc.date)}</span>
+                      </div>
+                    </div>
+
+                    <!-- Supplier & Notes -->
+                    <div class="text-xs text-slate-600 space-y-1">
+                      <p class="truncate"><span class="font-semibold text-slate-700">Party:</span> ${escapeHtml(doc.vendor || '-')}</p>
+                      ${doc.notes ? `<p class="text-[11px] text-slate-500 line-clamp-2 italic">"${escapeHtml(doc.notes)}"</p>` : ''}
+                    </div>
+                  </div>
+
+                  <!-- Card Footer Actions -->
+                  <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between gap-2">
+                    <button type="button" data-action="cycle-status" data-id="${escapeHtml(doc.id)}" title="Click to toggle verification status" class="cursor-pointer hover:opacity-80 transition">
+                      ${getStatusBadgeHtml(doc.status)}
+                    </button>
+
+                    <div class="flex items-center gap-1">
+                      <button type="button" data-action="preview" data-id="${escapeHtml(doc.id)}" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white transition">
+                        Open / View
+                      </button>
+                      <button type="button" data-action="edit" data-id="${escapeHtml(doc.id)}" title="Edit Record" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200/70 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button type="button" data-action="delete" data-id="${escapeHtml(doc.id)}" title="Delete Record" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          // TABLE / REGISTER VIEW
+          container.innerHTML = `
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+              <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-900 text-slate-200 uppercase text-[11px] tracking-wider">
+                      <th class="py-3 px-3">PL No.</th>
+                      <th class="py-3 px-3">Document &amp; Category</th>
+                      <th class="py-3 px-3">Ref / PO / R-Note</th>
+                      <th class="py-3 px-3">Date &amp; Qty</th>
+                      <th class="py-3 px-3">Ward / Rack / Bin</th>
+                      <th class="py-3 px-3">Status</th>
+                      <th class="py-3 px-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200">
+                    ${filtered.map(doc => `
+                      <tr class="hover:bg-slate-50/90 transition">
+                        <td class="py-3 px-3 font-mono font-bold text-slate-800 whitespace-nowrap">
+                          <div class="flex items-center gap-1.5">
+                            <button type="button" data-action="star" data-id="${escapeHtml(doc.id)}" class="${doc.starred ? 'text-amber-500' : 'text-slate-300 hover:text-slate-500'}">★</button>
+                            <span>${escapeHtml(doc.plNo || 'N/A')}</span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-3">
+                          <div class="font-semibold text-slate-900">${escapeHtml(doc.title)}</div>
+                          <div class="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
+                            <span class="text-blue-700 font-medium">${escapeHtml(doc.category)}</span>
+                            <span>•</span>
+                            <span>${escapeHtml(doc.vendor || '-')}</span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-3 font-mono text-slate-700 whitespace-nowrap">${escapeHtml(doc.refNo)}</td>
+                        <td class="py-3 px-3 whitespace-nowrap">
+                          <div class="font-medium text-slate-800">${escapeHtml(doc.date)}</div>
+                          <div class="text-[11px] text-slate-500">${escapeHtml(doc.qty || '-')}</div>
+                        </td>
+                        <td class="py-3 px-3 text-slate-700 whitespace-nowrap">${escapeHtml(doc.location || '-')}</td>
+                        <td class="py-3 px-3 whitespace-nowrap">
+                          <button type="button" data-action="cycle-status" data-id="${escapeHtml(doc.id)}">
+                            ${getStatusBadgeHtml(doc.status)}
+                          </button>
+                        </td>
+                        <td class="py-3 px-3 text-right whitespace-nowrap">
+                          <div class="inline-flex items-center gap-1">
+                            <button type="button" data-action="preview" data-id="${escapeHtml(doc.id)}" class="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold">View</button>
+                            <button type="button" data-action="edit" data-id="${escapeHtml(doc.id)}" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">Edit</button>
+                            <button type="button" data-action="delete" data-id="${escapeHtml(doc.id)}" class="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium">Del</button>
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        }
+
+        // Attach action listeners
+        container.querySelectorAll('button[data-action]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const action = btn.getAttribute('data-action');
+            const id = btn.getAttribute('data-id');
+            handleDocAction(action, id);
+          });
+        });
+      }
+
+      function handleDocAction(action, id) {
+        const doc = documents.find(d => d.id === id);
+        if (!doc) return;
+
+        if (action === 'star') {
+          doc.starred = !doc.starred;
+          saveDocuments();
+          renderAll();
+          showToast(doc.starred ? 'Pinned to Starred / Urgent documents' : 'Removed from Starred', 'blue');
+        } else if (action === 'cycle-status') {
+          const order = ['Pending Verification', 'Verified', 'Archived'];
+          const idx = order.indexOf(doc.status);
+          doc.status = order[(idx + 1) % order.length];
+          saveDocuments();
+          renderAll();
+          showToast(`Status updated to "${doc.status}"`, 'emerald');
+        } else if (action === 'preview') {
+          openPreviewModal(doc);
+        } else if (action === 'edit') {
+          openDocModal(doc);
+        } else if (action === 'delete') {
+          deleteTargetId = doc.id;
+          document.getElementById('deleteModalDocName').textContent = `"${doc.title}" (${doc.refNo})`;
+          document.getElementById('deleteModal').classList.remove('hidden');
+        }
+      }
+
+      function openDocModal(docToEdit = null, preloadedFile = null) {
+        const modal = document.getElementById('docModal');
+        const titleEl = document.getElementById('docModalTitle');
+        pendingAttachment = null;
+
+        if (docToEdit) {
+          titleEl.textContent = 'Edit Store Document / Register Entry';
+          document.getElementById('formDocId').value = docToEdit.id;
+          document.getElementById('formTitle').value = docToEdit.title || '';
+          document.getElementById('formCategory').value = docToEdit.category || 'R-Note / Receipt';
+          document.getElementById('formPlNo').value = docToEdit.plNo || '';
+          document.getElementById('formRefNo').value = docToEdit.refNo || '';
+          document.getElementById('formDate').value = docToEdit.date || new Date().toISOString().slice(0, 10);
+          document.getElementById('formVendor').value = docToEdit.vendor || '';
+          document.getElementById('formLocation').value = docToEdit.location || '';
+          document.getElementById('formStatus').value = docToEdit.status || 'Verified';
+          document.getElementById('formQty').value = docToEdit.qty || '';
+          document.getElementById('formNotes').value = docToEdit.notes || '';
+
+          if (docToEdit.fileName) {
+            pendingAttachment = {
+              fileName: docToEdit.fileName,
+              fileType: docToEdit.fileType || 'PDF',
+              fileSize: docToEdit.fileSize || '150 KB',
+              fileDataUrl: docToEdit.fileDataUrl || ''
+            };
+          }
+        } else {
+          titleEl.textContent = 'Upload PDF / Add Store Document';
+          document.getElementById('formDocId').value = '';
+          document.getElementById('docForm').reset();
+          document.getElementById('formDate').value = new Date().toISOString().slice(0, 10);
+          document.getElementById('formStatus').value = 'Verified';
+        }
+
+        if (preloadedFile) {
+          handleSelectedFile(preloadedFile);
+        } else {
+          updateAttachmentUI();
+        }
+
+        modal.classList.remove('hidden');
+      }
+
+      function updateAttachmentUI() {
+        const placeholder = document.getElementById('fileAttachmentPlaceholder');
+        const preview = document.getElementById('fileAttachmentPreview');
+        if (pendingAttachment && pendingAttachment.fileName) {
+          placeholder.classList.add('hidden');
+          preview.classList.remove('hidden');
+          document.getElementById('attachedFileBadge').textContent = pendingAttachment.fileType || 'PDF';
+          document.getElementById('attachedFileName').textContent = pendingAttachment.fileName;
+          document.getElementById('attachedFileSize').textContent = pendingAttachment.fileSize || '';
+        } else {
+          placeholder.classList.remove('hidden');
+          preview.classList.add('hidden');
+        }
+      }
+
+      function handleSelectedFile(file) {
+        if (!file) return;
+        const badge = detectFileTypeBadge(file.name);
+        const sizeStr = formatBytes(file.size);
+        const titleInput = document.getElementById('formTitle');
+        if (!titleInput.value.trim()) {
+          titleInput.value = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ');
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          pendingAttachment = {
+            fileName: file.name,
+            fileType: badge,
+            fileSize: sizeStr,
+            fileDataUrl: e.target.result || ''
+          };
+          updateAttachmentUI();
+          showToast(`Attached "${file.name}" (${sizeStr})`, 'emerald');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function openPreviewModal(doc) {
+        previewDocId = doc.id;
+        const modal = document.getElementById('previewModal');
+        const body = document.getElementById('previewBody');
+        document.getElementById('previewBadge').textContent = doc.fileType || 'PDF';
+        document.getElementById('previewTitle').textContent = doc.title;
+
+        let embeddedViewerHtml = '';
+        if (doc.fileDataUrl && doc.fileDataUrl.startsWith('data:application/pdf')) {
+          embeddedViewerHtml = `
+            <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700">
+              <div class="px-4 py-2 bg-slate-900 text-slate-300 text-xs flex items-center justify-between">
+                <span>Attached PDF Preview: ${escapeHtml(doc.fileName)}</span>
+                <span class="text-slate-400">${escapeHtml(doc.fileSize)}</span>
+              </div>
+              <iframe src="${doc.fileDataUrl}" class="w-full h-96 bg-white" title="PDF Preview"></iframe>
+            </div>
+          `;
+        } else if (doc.fileDataUrl && doc.fileDataUrl.startsWith('data:image/')) {
+          embeddedViewerHtml = `
+            <div class="bg-white rounded-xl p-3 border border-slate-200 text-center">
+              <p class="text-xs text-slate-500 mb-2">Attached Scanned Image: ${escapeHtml(doc.fileName)}</p>
+              <img src="${doc.fileDataUrl}" alt="${escapeHtml(doc.title)}" class="max-w-full h-auto max-h-96 mx-auto rounded-lg border border-slate-200" />
+            </div>
+          `;
+        }
+
+        body.innerHTML = `
+          ${embeddedViewerHtml}
+
+          <!-- Official Indian Railways Printable Document Voucher -->
+          <div class="bg-white rounded-xl border border-slate-300 shadow-xs p-6 space-y-5 text-slate-900">
+            <div class="border-b-2 border-slate-800 pb-4 flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-blue-900">${escapeHtml(depotInfo.zoneName)}</p>
+                <h4 class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">${escapeHtml(depotInfo.depotName)}</h4>
+                <p class="text-xs text-slate-600 mt-0.5">OFFICIAL STORES REGISTER VOUCHER &amp; DOCUMENT RECORD</p>
+              </div>
+              <div class="text-right">
+                <span class="inline-block px-2.5 py-1 rounded bg-slate-900 text-white text-xs font-mono font-bold">${escapeHtml(doc.refNo)}</span>
+                <p class="text-xs text-slate-500 mt-1">Date: <strong class="text-slate-800">${escapeHtml(doc.date)}</strong></p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Document Category</span>
+                <span class="font-bold text-slate-900 text-sm">${escapeHtml(doc.category)}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Price List (PL) Number</span>
+                <span class="font-mono font-bold text-blue-800 text-sm">${escapeHtml(doc.plNo || 'N/A')}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Verification Status</span>
+                <span class="font-bold text-slate-900 text-sm">${escapeHtml(doc.status)}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Supplier / Consignee Party</span>
+                <span class="font-semibold text-slate-800">${escapeHtml(doc.vendor || '-')}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Ward / Rack / Bin Location</span>
+                <span class="font-semibold text-slate-800">${escapeHtml(doc.location || '-')}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 uppercase font-semibold block text-[10px]">Quantity / Unit</span>
+                <span class="font-semibold text-slate-800">${escapeHtml(doc.qty || '-')}</span>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <h5 class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Material / Document Description</h5>
+              <p class="text-sm font-semibold text-slate-900 bg-slate-50 p-3 rounded-lg border border-slate-200">${escapeHtml(doc.title)}</p>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <h5 class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Storekeeper Remarks &amp; Ledger Note</h5>
+              <p class="text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200">${escapeHtml(doc.notes || 'No additional remarks recorded.')}</p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-600">
+              <div>
+                <p>Attached File: <strong>${escapeHtml(doc.fileName || 'Digital Entry')}</strong> (${escapeHtml(doc.fileSize || '120 KB')})</p>
+              </div>
+              <div class="text-right">
+                <p class="font-semibold text-slate-900">${escapeHtml(depotInfo.storekeeperName)}</p>
+                <p class="text-[11px] text-slate-500">Storekeeper Digital Register Stamp</p>
+              </div>
+            </div>
+          </div>
+        `;
+
+        modal.classList.remove('hidden');
+      }
+
+      function downloadDocumentFile(doc) {
+        if (!doc) return;
+        if (doc.fileDataUrl) {
+          const a = document.createElement('a');
+          a.href = doc.fileDataUrl;
+          a.download = doc.fileName || `${doc.refNo || 'document'}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          showToast(`Downloaded "${doc.fileName}"`, 'emerald');
+        } else {
+          // Generate an official printable text/HTML voucher file if it was a sample record without binary payload
+          const voucherContent = [
+            '====================================================================',
+            '               INDIAN RAILWAYS — STORES DEPARTMENT                  ',
+            `   ${depotInfo.zoneName}`,
+            `   ${depotInfo.depotName}`,
+            '====================================================================',
+            '',
+            `Document Title   : ${doc.title}`,
+            `Category         : ${doc.category}`,
+            `PL Number        : ${doc.plNo || 'N/A'}`,
+            `Ref / PO / R-Note: ${doc.refNo}`,
+            `Date             : ${doc.date}`,
+            `Party / Vendor   : ${doc.vendor || '-'}`,
+            `Ward / Rack / Bin: ${doc.location || '-'}`,
+            `Quantity         : ${doc.qty || '-'}`,
+            `Status           : ${doc.status}`,
+            '',
+            'Storekeeper Remarks:',
+            `${doc.notes || 'None'}`,
+            '',
+            `Recorded By      : ${depotInfo.storekeeperName}`,
+            '===================================================================='
+          ].join('\n');
+
+          const blob = new Blob([voucherContent], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${(doc.refNo || 'Store_Voucher').replace(/[^a-zA-Z0-9_-]/g, '_')}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          showToast('Downloaded Store Voucher summary file', 'emerald');
+        }
+      }
+
+      function exportRegisterCsv() {
+        const filtered = getFilteredDocuments();
+        const headers = ['PL Number', 'Category', 'Title', 'Ref / PO / R-Note', 'Date', 'Quantity', 'Vendor / Party', 'Ward / Rack / Bin', 'Status', 'File Name', 'Remarks'];
+        const rows = filtered.map(d => [
+          d.plNo || '',
+          d.category || '',
+          d.title || '',
+          d.refNo || '',
+          d.date || '',
+          d.qty || '',
+          d.vendor || '',
+          d.location || '',
+          d.status || '',
+          d.fileName || '',
+          d.notes || ''
+        ]);
+
+        const csvContent = [headers, ...rows]
+          .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+          .join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Indian_Railway_Stores_Register_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('Exported Store Register to CSV (Excel compatible)', 'emerald');
+      }
+
+      function renderAll() {
+        renderDepotHeader();
+        renderStats();
+        renderCategoryTabs();
+        renderDocuments();
+      }
+
+      // Event Listeners Setup
+      function initEvents() {
+        // Search Input
+        const searchInput = document.getElementById('searchInput');
+        const btnClearSearch = document.getElementById('btnClearSearch');
+        searchInput.addEventListener('input', () => {
+          searchQuery = searchInput.value;
+          btnClearSearch.classList.toggle('hidden', searchQuery.trim() === '');
+          renderDocuments();
+        });
+        btnClearSearch.addEventListener('click', () => {
+          searchInput.value = '';
+          searchQuery = '';
+          btnClearSearch.classList.add('hidden');
+          renderDocuments();
+        });
+
+        // Status & Sort Filters
+        document.getElementById('statusFilter').addEventListener('change', (e) => {
+          activeStatus = e.target.value;
+          renderDocuments();
+        });
+        document.getElementById('sortSelect').addEventListener('change', (e) => {
+          activeSort = e.target.value;
+          renderDocuments();
+        });
+
+        // Reset Filters
+        document.getElementById('btnResetFilters').addEventListener('click', () => {
+          activeCategory = 'ALL';
+          activeStatus = 'ALL';
+          searchQuery = '';
+          document.getElementById('searchInput').value = '';
+          document.getElementById('statusFilter').value = 'ALL';
+          document.getElementById('btnClearSearch').classList.add('hidden');
+          renderAll();
+        });
+
+        // View Toggle
+        const btnGrid = document.getElementById('btnViewGrid');
+        const btnTable = document.getElementById('btnViewTable');
+        btnGrid.addEventListener('click', () => {
+          viewMode = 'GRID';
+          btnGrid.className = 'px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-blue-50 text-blue-700 border-blue-200';
+          btnTable.className = 'px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-white text-slate-600 border-slate-200 hover:bg-slate-50';
+          renderDocuments();
+        });
+        btnTable.addEventListener('click', () => {
+          viewMode = 'TABLE';
+          btnTable.className = 'px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-blue-50 text-blue-700 border-blue-200';
+          btnGrid.className = 'px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 border transition bg-white text-slate-600 border-slate-200 hover:bg-slate-50';
+          renderDocuments();
+        });
+
+        // Quick Upload Dropzone
+        const quickDropZone = document.getElementById('quickDropZone');
+        const quickFileInput = document.getElementById('quickFileInput');
+        quickDropZone.addEventListener('click', () => quickFileInput.click());
+        quickFileInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            openDocModal(null, e.target.files[0]);
+            quickFileInput.value = '';
+          }
+        });
+        quickDropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          quickDropZone.classList.add('bg-blue-50/60', 'border-blue-600');
+        });
+        quickDropZone.addEventListener('dragleave', () => {
+          quickDropZone.classList.remove('bg-blue-50/60', 'border-blue-600');
+        });
+        quickDropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          quickDropZone.classList.remove('bg-blue-50/60', 'border-blue-600');
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            openDocModal(null, e.dataTransfer.files[0]);
+          }
+        });
+
+        // Upload / Edit Modal Controls
+        document.getElementById('btnOpenUploadModal').addEventListener('click', () => openDocModal(null, null));
+        document.getElementById('btnCloseDocModal').addEventListener('click', () => {
+          document.getElementById('docModal').classList.add('hidden');
+        });
+        document.getElementById('btnCancelDocModal').addEventListener('click', () => {
+          document.getElementById('docModal').classList.add('hidden');
+        });
+
+        const modalDropArea = document.getElementById('modalDropArea');
+        const modalFileInput = document.getElementById('modalFileInput');
+        modalDropArea.addEventListener('click', (e) => {
+          if (e.target.id === 'btnRemoveAttachedFile') return;
+          modalFileInput.click();
+        });
+        modalFileInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            handleSelectedFile(e.target.files[0]);
+          }
+        });
+        document.getElementById('btnRemoveAttachedFile').addEventListener('click', (e) => {
+          e.stopPropagation();
+          pendingAttachment = null;
+          modalFileInput.value = '';
+          updateAttachmentUI();
+        });
+
+        // Submit Document Form
+        document.getElementById('docForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const editId = document.getElementById('formDocId').value;
+          const payload = {
+            id: editId || ('doc-' + Date.now()),
+            title: document.getElementById('formTitle').value.trim(),
+            category: document.getElementById('formCategory').value,
+            plNo: document.getElementById('formPlNo').value.trim() || 'N/A',
+            refNo: document.getElementById('formRefNo').value.trim(),
+            date: document.getElementById('formDate').value,
+            vendor: document.getElementById('formVendor').value.trim(),
+            location: document.getElementById('formLocation').value.trim(),
+            status: document.getElementById('formStatus').value,
+            qty: document.getElementById('formQty').value.trim(),
+            notes: document.getElementById('formNotes').value.trim(),
+            starred: editId ? (documents.find(d => d.id === editId)?.starred || false) : false,
+            fileName: pendingAttachment ? pendingAttachment.fileName : 'Digital_Voucher.pdf',
+            fileType: pendingAttachment ? pendingAttachment.fileType : 'PDF',
+            fileSize: pendingAttachment ? pendingAttachment.fileSize : '110 KB',
+            fileDataUrl: pendingAttachment ? pendingAttachment.fileDataUrl : ''
+          };
+
+          if (editId) {
+            const idx = documents.findIndex(d => d.id === editId);
+            if (idx !== -1) documents[idx] = payload;
+            showToast('Store document record updated', 'emerald');
+          } else {
+            documents.unshift(payload);
+            showToast('New document saved to Store Register', 'emerald');
+          }
+
+          saveDocuments();
+          document.getElementById('docModal').classList.add('hidden');
+          renderAll();
+        });
+
+        // Preview Modal Controls
+        document.getElementById('btnClosePreviewModal').addEventListener('click', () => {
+          document.getElementById('previewModal').classList.add('hidden');
+        });
+        document.getElementById('btnPrintPreview').addEventListener('click', () => {
+          window.print();
+        });
+        document.getElementById('btnDownloadFromPreview').addEventListener('click', () => {
+          const doc = documents.find(d => d.id === previewDocId);
+          downloadDocumentFile(doc);
+        });
+
+        // Delete Modal Controls
+        document.getElementById('btnCancelDelete').addEventListener('click', () => {
+          deleteTargetId = null;
+          document.getElementById('deleteModal').classList.add('hidden');
+        });
+        document.getElementById('btnConfirmDelete').addEventListener('click', () => {
+          if (deleteTargetId) {
+            documents = documents.filter(d => d.id !== deleteTargetId);
+            saveDocuments();
+            renderAll();
+            showToast('Document removed from register', 'rose');
+          }
+          deleteTargetId = null;
+          document.getElementById('deleteModal').classList.add('hidden');
+        });
+
+        // Depot Settings Modal
+        document.getElementById('btnDepotSettings').addEventListener('click', () => {
+          document.getElementById('inputZoneName').value = depotInfo.zoneName;
+          document.getElementById('inputDepotName').value = depotInfo.depotName;
+          document.getElementById('inputStorekeeperName').value = depotInfo.storekeeperName;
+          document.getElementById('depotModal').classList.remove('hidden');
+        });
+        document.getElementById('btnCloseDepotModal').addEventListener('click', () => {
+          document.getElementById('depotModal').classList.add('hidden');
+        });
+        document.getElementById('btnCancelDepotModal').addEventListener('click', () => {
+          document.getElementById('depotModal').classList.add('hidden');
+        });
+        document.getElementById('depotForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          depotInfo = {
+            zoneName: document.getElementById('inputZoneName').value.trim(),
+            depotName: document.getElementById('inputDepotName').value.trim(),
+            storekeeperName: document.getElementById('inputStorekeeperName').value.trim()
+          };
+          saveDepotInfo();
+          renderDepotHeader();
+          document.getElementById('depotModal').classList.add('hidden');
+          showToast('Depot details updated', 'emerald');
+        });
+
+        // Login & Auth Controls
+        const loginForm = document.getElementById('loginForm');
+        const loginErrorBox = document.getElementById('loginErrorBox');
+        const loginUserId = document.getElementById('loginUserId');
+        const loginPassword = document.getElementById('loginPassword');
+
+        document.getElementById('btnToggleLoginPwd').addEventListener('click', (e) => {
+          const isPwd = loginPassword.type === 'password';
+          loginPassword.type = isPwd ? 'text' : 'password';
+          e.target.textContent = isPwd ? 'Hide' : 'Show';
+        });
+
+        document.getElementById('btnQuickFillLogin').addEventListener('click', () => {
+          loginUserId.value = authConfig.userId;
+          loginPassword.value = authConfig.password;
+          loginErrorBox.classList.add('hidden');
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const enteredId = loginUserId.value.trim();
+          const enteredPwd = loginPassword.value;
+          if (enteredId.toLowerCase() === authConfig.userId.toLowerCase() && enteredPwd === authConfig.password) {
+            isAuthenticated = true;
+            try {
+              sessionStorage.setItem(SESSION_KEY, 'true');
+            } catch (err) {}
+            loginErrorBox.classList.add('hidden');
+            loginPassword.value = '';
+            renderAuthUI();
+            showToast(`Welcome to SECR Bilaspur Division Stores Portal (${authConfig.userId})`, 'emerald');
+          } else {
+            loginErrorBox.classList.remove('hidden');
+          }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+          isAuthenticated = false;
+          try {
+            sessionStorage.removeItem(SESSION_KEY);
+          } catch (err) {}
+          loginUserId.value = '';
+          loginPassword.value = '';
+          loginErrorBox.classList.add('hidden');
+          renderAuthUI();
+          showToast('Logged out securely', 'blue');
+        });
+
+        document.getElementById('btnAuthSettings').addEventListener('click', () => {
+          document.getElementById('inputNewUserId').value = authConfig.userId;
+          document.getElementById('inputNewPassword').value = authConfig.password;
+          document.getElementById('inputStaffRole').value = depotInfo.storekeeperName;
+          document.getElementById('authModal').classList.remove('hidden');
+        });
+        document.getElementById('btnCloseAuthModal').addEventListener('click', () => {
+          document.getElementById('authModal').classList.add('hidden');
+        });
+        document.getElementById('btnCancelAuthModal').addEventListener('click', () => {
+          document.getElementById('authModal').classList.add('hidden');
+        });
+        document.getElementById('authForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const newId = document.getElementById('inputNewUserId').value.trim();
+          const newPwd = document.getElementById('inputNewPassword').value.trim();
+          const newRole = document.getElementById('inputStaffRole').value.trim();
+          if (!newId || !newPwd) return;
+          authConfig.userId = newId;
+          authConfig.password = newPwd;
+          depotInfo.storekeeperName = newRole || depotInfo.storekeeperName;
+          saveAuthConfig();
+          saveDepotInfo();
+          renderAll();
+          document.getElementById('authModal').classList.add('hidden');
+          showToast(`Updated Login ID to "${newId}"`, 'emerald');
+        });
+
+        // Export CSV
+        document.getElementById('btnExportCsv').addEventListener('click', exportRegisterCsv);
+
+        // Backup & Restore Modal
+        document.getElementById('btnBackupModal').addEventListener('click', () => {
+          document.getElementById('backupModal').classList.remove('hidden');
+        });
+        document.getElementById('btnCloseBackupModal').addEventListener('click', () => {
+          document.getElementById('backupModal').classList.add('hidden');
+        });
+        document.getElementById('btnDoneBackupModal').addEventListener('click', () => {
+          document.getElementById('backupModal').classList.add('hidden');
+        });
+        document.getElementById('btnDownloadJsonBackup').addEventListener('click', () => {
+          const payload = {
+            exportedAt: new Date().toISOString(),
+            depotInfo,
+            documents
+          };
+          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `IR_Stores_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          showToast('Full JSON Backup downloaded', 'emerald');
+        });
+        document.getElementById('inputRestoreJson').addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function (ev) {
+            try {
+              const parsed = JSON.parse(ev.target.result);
+              if (parsed && Array.isArray(parsed.documents)) {
+                documents = parsed.documents;
+                if (parsed.depotInfo) depotInfo = parsed.depotInfo;
+                saveDocuments();
+                saveDepotInfo();
+                renderAll();
+                document.getElementById('backupModal').classList.add('hidden');
+                showToast(`Restored ${documents.length} records from backup`, 'emerald');
+              } else {
+                showToast('Invalid backup file format', 'rose');
+              }
+            } catch (err) {
+              showToast('Could not read JSON backup file', 'rose');
+            }
+          };
+          reader.readAsText(file);
+        });
+      }
+
+
+      // Railway Office Desk modules (saved in this browser)
+      const OFFICE_KEY = 'secr_railway_office_desk_v1';
+      let officeData = { books: [], contacts: [], letters: [], notes: [], demands: [], profile: {} };
+      try { officeData = { ...officeData, ...JSON.parse(localStorage.getItem(OFFICE_KEY) || '{}') }; } catch (e) {}
+      const officeSave = () => { try { localStorage.setItem(OFFICE_KEY, JSON.stringify(officeData)); } catch(e) { showToast('Storage is full. Consider removing large files or exporting a backup.', 'rose'); } officeCounts(); };
+      const officeEsc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const officeCounts = () => {
+        ['books','contacts','letters','notes','demands'].forEach(k => { const el=document.getElementById('count-'+k); if(el) el.textContent=officeData[k].length+' '+({books:'files',contacts:'contacts',letters:'letters',notes:'notes',demands:'demands'}[k]); });
+        const p=document.getElementById('officeProfileSummary'); if(p) p.textContent=officeData.profile.designation || depotInfo.storekeeperName || 'Storekeeper / In-Charge';
+      };
+      const officeWorkspace=document.getElementById('officeWorkspace'), officeBody=document.getElementById('officeWorkspaceBody');
+      const officeOpen=(module)=> {
+        officeWorkspace.classList.remove('hidden');
+        const titles={books:'Important Books & Reference Files',contacts:'Telephone Directory',letters:'Letters & Correspondence',notes:'Office Notes',demands:'Demand Status Register',profile:'Railway Staff Profile'};
+        document.getElementById('officeWorkspaceTitle').textContent=titles[module]||'Office Workspace';
+        const rows=officeData[module]||[];
+        let form='';
+        if(module==='books') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-3"><input name="title" required placeholder="Book / document title" class="rounded-lg border p-2.5 text-sm"><input name="category" placeholder="Category (Rules, Manuals...)" class="rounded-lg border p-2.5 text-sm"><input name="file" type="file" accept=".pdf,.doc,.docx,.txt,.jpg,.png" class="rounded-lg border p-2 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-3">Save Reference Book</button><p class="text-xs text-slate-500 md:col-span-3">Files are saved in this browser. Very large files may exceed browser storage limits.</p></form>`;
+        if(module==='contacts') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-4"><input name="name" required placeholder="Officer / contact name" class="rounded-lg border p-2.5 text-sm"><input name="designation" placeholder="Designation / office" class="rounded-lg border p-2.5 text-sm"><input name="phone" required placeholder="Telephone / mobile" class="rounded-lg border p-2.5 text-sm"><input name="email" placeholder="Email (optional)" class="rounded-lg border p-2.5 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-4">Add Contact</button></form>`;
+        if(module==='letters') form=`<form id="officeForm" class="mb-5 grid gap-3"><input name="title" required placeholder="Letter subject / file title" class="rounded-lg border p-2.5 text-sm"><div class="grid gap-3 md:grid-cols-2"><input name="to" placeholder="To / recipient" class="rounded-lg border p-2.5 text-sm"><input name="ref" placeholder="Letter number / reference" class="rounded-lg border p-2.5 text-sm"></div><textarea name="body" required rows="5" placeholder="Write your letter here..." class="rounded-lg border p-3 text-sm"></textarea><button class="justify-self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white">Save Letter</button></form>`;
+        if(module==='notes') form=`<form id="officeForm" class="mb-5 grid gap-3"><input name="title" required placeholder="Note title" class="rounded-lg border p-2.5 text-sm"><textarea name="body" required rows="4" placeholder="Write your office note or reminder..." class="rounded-lg border p-3 text-sm"></textarea><button class="justify-self-start rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white">Save Note</button></form>`;
+        if(module==='demands') form=`<form id="officeForm" class="mb-5 grid gap-3 md:grid-cols-3"><input name="demandNo" required placeholder="Demand / indent number" class="rounded-lg border p-2.5 text-sm"><input name="item" required placeholder="Item / PL number" class="rounded-lg border p-2.5 text-sm"><input name="qty" placeholder="Quantity" class="rounded-lg border p-2.5 text-sm"><select name="status" class="rounded-lg border p-2.5 text-sm"><option>Draft</option><option>Submitted</option><option>Under Process</option><option>PO Placed</option><option>Partially Supplied</option><option>Supplied</option><option>Closed</option></select><input name="date" type="date" class="rounded-lg border p-2.5 text-sm"><input name="remarks" placeholder="Remarks / next action" class="rounded-lg border p-2.5 text-sm"><button class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white md:col-span-3">Add Demand / Update Register</button></form>`;
+        if(module==='profile') form=`<form id="officeForm" class="grid gap-4 md:grid-cols-2"><label class="text-sm font-semibold">Full Name<input name="name" value="${officeEsc(officeData.profile.name||'')}" placeholder="Staff name" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Designation<input name="designation" value="${officeEsc(officeData.profile.designation||depotInfo.storekeeperName||'')}" placeholder="e.g. Storekeeper / DMS" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Employee Number<input name="employeeNo" value="${officeEsc(officeData.profile.employeeNo||'')}" placeholder="Employee number" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Railway Zone / Division<input name="division" value="${officeEsc(officeData.profile.division||depotInfo.zoneName||'')}" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold md:col-span-2">Depot / Office<input name="depot" value="${officeEsc(officeData.profile.depot||depotInfo.depotName||'')}" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Office Telephone<input name="phone" value="${officeEsc(officeData.profile.phone||'')}" placeholder="Office contact" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><label class="text-sm font-semibold">Email<input name="email" value="${officeEsc(officeData.profile.email||'')}" placeholder="Official email" class="mt-1 block w-full rounded-lg border p-2.5 font-normal"></label><button class="justify-self-start rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white md:col-span-2">Save Staff Profile</button></form>`;
+        const list=rows.length?`<div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="p-3">Details</th><th class="p-3">Additional Information</th><th class="p-3">Action</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="border-t border-slate-100 align-top"><td class="p-3 font-semibold">${officeEsc(r.title||r.name||r.demandNo||r.item||'Record')}<div class="mt-1 text-xs font-normal text-slate-500">${officeEsc(r.category||r.designation||r.ref||r.date||'')}</div></td><td class="p-3 whitespace-pre-wrap text-slate-600">${officeEsc(r.body||[r.phone,r.email,r.to,r.qty,r.status,r.remarks,r.fileName].filter(Boolean).join(' • '))}${r.fileData?`<div class="mt-2"><a class="text-blue-700 underline" download="${officeEsc(r.fileName||'reference')}" href="${r.fileData}">Open / download file</a></div>`:''}</td><td class="p-3"><button data-office-delete="${i}" class="rounded-lg border border-rose-200 px-2.5 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Delete</button></td></tr>`).join('')}</tbody></table></div>`:`<div class="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">No records yet. Use the form above to add your first entry.</div>`;
+        officeBody.innerHTML=form+list;
+        const f=document.getElementById('officeForm');
+        if(f) f.addEventListener('submit',async e=>{
+          e.preventDefault(); const fd=new FormData(f), obj=Object.fromEntries(fd.entries());
+          if(module==='books' && fd.get('file') && fd.get('file').size){
+            const file=fd.get('file'); obj.fileName=file.name;
+            if(file.size>1800000){showToast('Please choose a file smaller than 1.8 MB for browser storage.','rose');return;}
+            obj.fileData=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(file);});
+          }
+          if(module==='profile'){officeData.profile=obj; depotInfo.storekeeperName=obj.designation||depotInfo.storekeeperName; if(obj.division)depotInfo.zoneName=obj.division; if(obj.depot)depotInfo.depotName=obj.depot; saveDepotInfo(); renderDepotHeader();}
+          else {obj.id=Date.now().toString(); obj.createdAt=new Date().toISOString().slice(0,10); officeData[module].unshift(obj);}
+          officeSave(); officeOpen(module); showToast('Saved successfully','emerald');
+        });
+        officeBody.querySelectorAll('[data-office-delete]').forEach(b=>b.addEventListener('click',()=>{if(confirm('Delete this record?')){officeData[module].splice(Number(b.dataset.officeDelete),1);officeSave();officeOpen(module);}}));
+      };
+      document.querySelectorAll('[data-office-module]').forEach(b=>b.addEventListener('click',()=>officeOpen(b.dataset.officeModule)));
+      document.getElementById('officeProfileButton').addEventListener('click',()=>officeOpen('profile'));
+      document.getElementById('officeCloseWorkspace').addEventListener('click',()=>officeWorkspace.classList.add('hidden'));
+      officeCounts();
+
+      // Initialize App
+      loadState();
+      initEvents();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
